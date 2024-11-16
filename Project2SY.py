@@ -114,7 +114,7 @@ model_2.summary()
 early_stopping = EarlyStopping(monitor='val_loss', patience=4, restore_best_weights=True)
 
 # Train the model (using model_1 as an example)
-history = model_2.fit(
+history = model_1.fit(
     train_generator,
     steps_per_epoch=steps_per_epoch,  # Correct value as integer
     epochs=15,  # Increase epochs, but use early stopping
