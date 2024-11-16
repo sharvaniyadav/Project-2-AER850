@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 # Check TensorFlow and Keras Versions (Shashank did it in sample code):
 print(f"TensorFlow Version: {tf.__version__}")
-print(f"Keras Version: {keras.__version__}")
+print(f"Keras Version: {keras.__version__}\n")
 
 # ---------------------------------------
 # ---------------------------------------
@@ -73,7 +73,7 @@ validation_generator = tf.keras.preprocessing.image_dataset_from_directory(
 # No augmentation on validation data to keep it unaltered and representative of real-world data.
 
 # Print summary of data generator (number of samples in the train and validation sets)
-print("Train generator:", train_generator.cardinality().numpy(), "samples")
+print("\nTrain generator:", train_generator.cardinality().numpy(), "samples")
 print("Validation generator:", validation_generator.cardinality().numpy(), "samples")
 
 # Check class labels to ensure they are split correctly
@@ -89,7 +89,7 @@ print("Class indices:", train_generator.class_names)
 model_1 = Sequential([
     Conv2D(32, (3, 3), 
            activation='relu', 
-           input_shape=(img_height, img_width, 3)),
+           input_shape = (img_height, img_width, 3)),
     MaxPooling2D(pool_size=(2, 2)),
     
     Conv2D(64, (3, 3), activation='relu'),
@@ -115,7 +115,7 @@ model_1.compile(
 
 model_2 = Sequential([
     Conv2D(32, (3, 3), activation='relu', 
-    input_shape=(img_height, img_width, 3)),
+    input_shape = (img_height, img_width, 3)),
     MaxPooling2D(pool_size=(2, 2)),
     
     Conv2D(64, (3, 3), activation='relu'),
@@ -139,7 +139,7 @@ model_2.compile(optimizer='adam',
                 metrics=['accuracy'])
 
 # Print Summaries for Both Models:
-print("Model 1 Summary:")
+print("\nModel 1 Summary:")
 model_1.summary()
 
 print("\nModel 2 Summary:")
