@@ -5,6 +5,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 from tensorflow.keras.preprocessing import image_dataset_from_directory
 import matplotlib.pyplot as plt
+from tensorflow.keras.callbacks import EarlyStopping
 
 # Check TensorFlow and Keras Versions (Shashank did it in sample code):
 print(f"TensorFlow Version: {tf.__version__}")
@@ -12,7 +13,7 @@ print(f"Keras Version: {keras.__version__}\n")
 
 # ---------------------------------------
 # ---------------------------------------
-# STEP 2.1 - DATA PROCESSING (20 Marks)
+# STEP 2.1 - DATA PROCESSINGh
 # ---------------------------------------
 # ---------------------------------------
 
@@ -79,11 +80,11 @@ print("Validation generator:", validation_generator.cardinality().numpy(), "samp
 # Check class labels to ensure they are split correctly
 print("Class indices:", train_generator.class_names)
 
-# -------------------------------------------------------------------------
-# -------------------------------------------------------------------------
-# STEP 2.2 - MODEL BUILDING: Neural Network Architecture Design (30 Marks)
-# -------------------------------------------------------------------------
-# -------------------------------------------------------------------------
+# --------------------------------------------------------------
+# --------------------------------------------------------------
+# STEP 2.2 - MODEL BUILDING: Neural Network Architecture Design 
+# --------------------------------------------------------------
+# --------------------------------------------------------------
 
 # First Model: Simpler CNN Model
 model_1 = Sequential([
@@ -145,6 +146,72 @@ model_1.summary()
 print("\nModel 2 Summary:")
 model_2.summary()
 
+# ---------------------------------------
+# STEP 2.3 - MODEL TRAINING AND EVALUATION
+# ---------------------------------------
+
+# EarlyStopping callback to avoid overfitting
+early_stopping = EarlyStopping(monitor='val_loss', 
+                               patience=4, 
+                               restore_best_weights=True)
+
+# Train the model (using model_2 as an example)
+history = model_2.fit(
+    train_generator,
+    steps_per_epoch=train_generator.cardinality().numpy(),  # Updated to use cardinality()
+    epochs = 15,  # Increase epochs, but use early stopping
+    validation_data=validation_generator,
+    validation_steps=validation_generator.cardinality().numpy(),  # Updated to use cardinality()
+    callbacks=[early_stopping]
+)
+
+# -----------------------------
+# -----------------------------
+# STEP 2.4 - MODEL EVALUATION
+# -----------------------------
+# -----------------------------
+
+# Evaluate model performance on the test data
+test_generator = tf.keras.preprocessing.image_dataset_from_directory(
+    test_directory,
+    image_size=(img_height, img_width),
+    batch_size=batch_size,
+    label_mode='categorical'
+)
+
+test_loss, test_acc = model_2.evaluate(test_generator)
+print(f"\nTest accuracy: {test_acc:.4f}")
+print(f"Test loss: {test_loss:.4f}")
+
+# --------------------------------------------------
+# --------------------------------------------------
+# STEP 2.5 - PLOTTING TRAINING & VALIDATION RESULTS
+# --------------------------------------------------
+# --------------------------------------------------
+
+# Plot training & validation accuracy and loss
+plt.figure(figsize=(12, 4))
+
+# Plot training & validation accuracy
+plt.subplot(1, 2, 1)
+plt.plot(history.history['accuracy'], label='Training Accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.title('Model Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+
+# Plot training & validation loss
+plt.subplot(1, 2, 2)
+plt.plot(history.history['loss'], label='Training Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.title('Model Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
 
 
 
@@ -174,3 +241,65 @@ model_2.summary()
 
 
 
+
+'''
+# Define the EarlyStopping callback for model training
+def create_early_stopping_callback(
+        monitor='val_loss',
+        patience=4):
+    
+    return EarlyStopping(monitor=monitor, 
+                         patience=patience, 
+                         restore_best_weights=True)
+
+early_stopping_callback = create_early_stopping_callback()
+
+# Training the model
+def train_model(model, train_generator, validation_generator, batch_size, epochs=10):
+    history = model.fit(
+        train_generator,
+        steps_per_epoch=train_generator.samples // batch_size,
+        epochs=epochs,
+        validation_data=validation_generator,
+        validation_steps=validation_generator.samples // batch_size,
+        callbacks=[early_stopping_callback]
+    )
+    return history
+
+# Assuming the model is already compiled and ready to be trained
+history = train_model(model, train_generator, validation_generator, batch_size=32)
+
+# Step 3: Plotting the results: Training vs Validation Accuracy and Loss
+def plot_training_history(history):
+    plt.figure(figsize=(12, 6))
+
+    # Accuracy Plot
+    plt.subplot(1, 2, 1)
+    plt.plot(history.history['accuracy'], label='Training Accuracy')
+    plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+    plt.title('Training and Validation Accuracy')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.legend()
+
+    # Loss Plot
+    plt.subplot(1, 2, 2)
+    plt.plot(history.history['loss'], label='Training Loss')
+    plt.plot(history.history['val_loss'], label='Validation Loss')
+    plt.title('Training and Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+plot_training_history(history)
+
+# Step 4: Model Evaluation
+def evaluate_model(model, validation_generator):
+    test_loss, test_acc = model.evaluate(validation_generator)
+    print(f"Model's Final Accuracy on Validation Data: {test_acc:.4f}")
+
+evaluate_model(model, validation_generator)
+'''
