@@ -42,19 +42,19 @@ valid_datagen = ImageDataGenerator(
 # Data Generators for Train and Validation
 train_generator = train_datagen.flow_from_directory (
     train_directory,
-    image_size=(img_height, img_width),
+    target_size=(img_height, img_width),
     batch_size = batch_size,
     class_mode = 'categorical')
 
 validation_generator = valid_datagen.flow_from_directory (
     valid_directory,
-    image_size = (img_height, img_width),
+    target_size=(img_height, img_width),
     batch_size = batch_size,
     class_mode ='categorical')
 
-print("\nTrain generator:", train_generator.cardinality().numpy(), "samples")
-print("Validation generator:", validation_generator.cardinality().numpy(), "samples")
-print("Class indices:", train_generator.class_names)
+print("\nTrain generator:", train_generator.samples, "samples")
+print("Validation generator:", validation_generator.samples, "samples")
+print("Class indices:\n", train_generator.class_indices)
 
 # -----------------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------------
@@ -138,8 +138,14 @@ training_history = dcnn_model.fit(
 
 # Evaluate the model performance on the validation data
 val_loss, val_accuracy = dcnn_model.evaluate(validation_generator)
-print(f"\nValidation accuracy: {val_accuracy:.4f}")
-print(f"Validation loss: {val_loss:.4f}")
+print(f"\nFinal Validation accuracy: {val_accuracy:.4f}")
+print(f"Final Validation loss: {val_loss:.4f}\n")
+
+# Access training loss and accuracy
+train_loss = training_history.history['loss'][-1]
+train_accuracy = training_history.history['accuracy'][-1]
+print(f"\nFinal Training accuracy: {train_accuracy:.4f}")
+print(f"Final Training loss: {train_loss:.4f}\n")
 
 # -----------------------------------------------------------------------------------------
 # -----------------------------------------------------------------------------------------
