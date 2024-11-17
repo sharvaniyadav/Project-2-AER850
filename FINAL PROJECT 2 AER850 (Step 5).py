@@ -42,7 +42,7 @@ class ModelTester:
         plt.imshow(img)  # Display image
         ax.axis('off')  # Hide axis
 
-        # Create the title based on true and predicted labels
+        # Dynamically create the title based on true and predicted labels
         title = f"True {true_label} Classification Label: {true_label}\n" \
                 f"Predicted {predicted_label} Classification Label: {predicted_label}"
         plt.title(title)  # Set title for the plot
@@ -50,10 +50,10 @@ class ModelTester:
         # Sort predictions and display the probability of each class
         sorted_labels = sorted(zip(self.class_labels, predictions[0]), key=lambda x: x[1], reverse=True)
         for index, (label, prob) in enumerate(sorted_labels):
-            ax.text(10, 25 + index * 30, f"{label}: {prob * 100:.2f}%", bbox=dict(facecolor="pink"),
-                    fontsize=10, color='black')  # Add text with probability
+            ax.text(10, 25 + index * 30, f"{label}: {prob * 100:.2f}%", fontsize=10, color='black',
+                    bbox=dict(facecolor="pink", edgecolor="none"))  # Pink background, no border
 
-        # Add name and student number at the bottom of the image
+        # Adding my name and student number at the bottom of the image
         plt.figtext(0.5, 0.01, "Sharvani Yadav - 501108658", ha="center", fontsize=12, color="black", 
                     bbox=dict(facecolor="white", edgecolor="none"))
 
@@ -72,7 +72,7 @@ class ModelTester:
 test_images = [
     (r"C:\Users\Sharvani Yadav\OneDrive\Documents\GitHub\Project-2-AER850\DataSet\test\crack\test_crack.jpg", "Crack"),
     (r"C:\Users\Sharvani Yadav\OneDrive\Documents\GitHub\Project-2-AER850\DataSet\test\missing-head\test_missinghead.jpg", "Missing Head"),
-    (r"C:\Users\Sharvani Yadav\OneDrive\Documents\GitHub\Project-2-AER850\DataSet\test\paint-off\test_paintoff.jpg", "Paint-Off")]
+    (r"C:\Users\Sharvani Yadav\OneDrive\Documents\GitHub\Project-2-AER850\DataSet\test\paint-off\test_paintoff.jpg", "Paint-Off")] 
 
 # -----------------------------------------------------------------------------------------
 
@@ -82,3 +82,5 @@ tester = ModelTester("Aircraft_DCNN_Model.keras")
 # Test each image in the test_images list
 for image_path, true_label in test_images:
     tester.test_image(image_path, true_label)
+
+# END OF CODE
