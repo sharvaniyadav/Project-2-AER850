@@ -42,7 +42,7 @@ class ModelTester:
         plt.imshow(img)  # Display image
         ax.axis('off')  # Hide axis
 
-        # Dynamically create the title based on true and predicted labels
+        # Create the title based on true and predicted labels
         title = f"True {true_label} Classification Label: {true_label}\n" \
                 f"Predicted {predicted_label} Classification Label: {predicted_label}"
         plt.title(title)  # Set title for the plot
@@ -53,7 +53,7 @@ class ModelTester:
             ax.text(10, 25 + index * 30, f"{label}: {prob * 100:.2f}%", bbox=dict(facecolor="pink"),
                     fontsize=10, color='black')  # Add text with probability
 
-        # Add your name and student number at the bottom of the image
+        # Add name and student number at the bottom of the image
         plt.figtext(0.5, 0.01, "Sharvani Yadav - 501108658", ha="center", fontsize=12, color="black", 
                     bbox=dict(facecolor="white", edgecolor="none"))
 
@@ -68,7 +68,7 @@ class ModelTester:
 
 # -----------------------------------------------------------------------------------------
 
-# Specify the test images (replace with actual paths as needed)
+# Specify the test images
 test_images = [
     (r"C:\Users\Sharvani Yadav\OneDrive\Documents\GitHub\Project-2-AER850\DataSet\test\crack\test_crack.jpg", "Crack"),
     (r"C:\Users\Sharvani Yadav\OneDrive\Documents\GitHub\Project-2-AER850\DataSet\test\missing-head\test_missinghead.jpg", "Missing Head"),
