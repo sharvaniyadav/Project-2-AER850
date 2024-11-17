@@ -1,5 +1,4 @@
 
-
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers, models
@@ -103,6 +102,56 @@ dcnn_model.add(layers.Dense(3, activation='softmax'))  # Output layer with 3 cla
 dcnn_model.add(layers.Dense(64, 
                             activation='relu'))  # Fully connected layer
 dcnn_model.add(layers.Dropout(0.5))  # Dropout for regularization
+
+# ---------------------------------------
+# ---------------------------------------
+# STEP 3 - MODEL HYPERPARAMETER ANALYSIS
+# ---------------------------------------
+# ---------------------------------------
+
+dcnn_model.compile(optimizer='adam', 
+                   loss="categorical_crossentropy", 
+                   metrics=["accuracy"])
+
+dcnn_model.summary()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -354,64 +403,3 @@ plt.show()
 
 
 
-'''
-# Define the EarlyStopping callback for model training
-def create_early_stopping_callback(
-        monitor='val_loss',
-        patience=4):
-    
-    return EarlyStopping(monitor=monitor, 
-                         patience=patience, 
-                         restore_best_weights=True)
-
-early_stopping_callback = create_early_stopping_callback()
-
-# Training the model
-def train_model(model, train_generator, validation_generator, batch_size, epochs=10):
-    history = model.fit(
-        train_generator,
-        steps_per_epoch=train_generator.samples // batch_size,
-        epochs=epochs,
-        validation_data=validation_generator,
-        validation_steps=validation_generator.samples // batch_size,
-        callbacks=[early_stopping_callback]
-    )
-    return history
-
-# Assuming the model is already compiled and ready to be trained
-history = train_model(model, train_generator, validation_generator, batch_size=32)
-
-# Step 3: Plotting the results: Training vs Validation Accuracy and Loss
-def plot_training_history(history):
-    plt.figure(figsize=(12, 6))
-
-    # Accuracy Plot
-    plt.subplot(1, 2, 1)
-    plt.plot(history.history['accuracy'], label='Training Accuracy')
-    plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
-    plt.title('Training and Validation Accuracy')
-    plt.xlabel('Epochs')
-    plt.ylabel('Accuracy')
-    plt.legend()
-
-    # Loss Plot
-    plt.subplot(1, 2, 2)
-    plt.plot(history.history['loss'], label='Training Loss')
-    plt.plot(history.history['val_loss'], label='Validation Loss')
-    plt.title('Training and Validation Loss')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.legend()
-
-    plt.tight_layout()
-    plt.show()
-
-plot_training_history(history)
-
-# Step 4: Model Evaluation
-def evaluate_model(model, validation_generator):
-    test_loss, test_acc = model.evaluate(validation_generator)
-    print(f"Model's Final Accuracy on Validation Data: {test_acc:.4f}")
-
-evaluate_model(model, validation_generator)
-'''
