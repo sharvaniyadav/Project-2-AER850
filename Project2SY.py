@@ -1,3 +1,5 @@
+
+
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
@@ -8,7 +10,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.callbacks import EarlyStopping
 
 # Check TensorFlow and Keras Versions
-print(f"TensorFlow Version: {tf.__version__}")
+print(f"\nTensorFlow Version: {tf.__version__}")
 print(f"Keras Version: {keras.__version__}\n")
 
 # ---------------------------------------
@@ -116,12 +118,13 @@ early_stopping = EarlyStopping(monitor='val_loss', patience=4, restore_best_weig
 # Train the model (using model_1 as an example)
 history = model_1.fit(
     train_generator,
-    steps_per_epoch=steps_per_epoch,  # Correct value as integer
+    steps_per_epoch = steps_per_epoch,  # Correct value as integer
     epochs=15,  # Increase epochs, but use early stopping
     validation_data=validation_generator,
     validation_steps=validation_steps,  # Correct value as integer
     callbacks=[early_stopping]
 )
+
 
 # ---------------------------------------
 # STEP 2.4 - MODEL EVALUATION
