@@ -115,6 +115,19 @@ dcnn_model.compile(optimizer='adam',
 
 dcnn_model.summary()
 
+# ------------------------
+# ------------------------
+# STEP 4 - MODEL TRAINING
+# ------------------------
+# ------------------------
+
+# Train the model using the data generators for training and validation
+training_history = dcnn_model.fit(
+    train_generator,  # Using the train data generator
+    epochs=60,        # Number of epochs for training
+    validation_data = validation_generator  # Using the validation data generator
+)
+
 
 
 
